@@ -122,8 +122,47 @@ def model_architecture_constructor(imdim,conv_layers,dense_layers,classes=4,
         (3) #Fully connected dense layers ---> dense_layers
         (4) #Image classes images are grouped into
         (5) Convolutional Layers parameter dictionary --> conv_params
-        (6) Dense Layers parameter dictionary ---> dense_params"""
-
+        (6) Dense Layers parameter dictionary ---> dense_params
+        
+     Example conv_params dictionary:
+    
+    
+     conv_params = {'0':{'filters':32,
+                         'filter_kernel_size':(3,3),
+                         'activation':'relu',
+                         'pool_kernel_size':(2,2)},
+                    '1':{'filters':32,
+                         'filter_kernel_size':(3,3),
+                         'activation':'relu',
+                         'pool_kernel_size':(2,2)}
+                    }
+                    
+                    
+       If a conv_params dictionary has fewer entries than the number of conv layers
+       specified, the unspecified layer will be given default parameters as seen in set_conv_default().
+       The layer key strings must be entered as seen in the example;'filters' value  must be an integer;
+       'filter_kernel_size' value must be a (n,m) tuple; 'activation' value must be a string; 'relu','softmax','sigmoid',
+       etc; 'pool_kernel_size' must be a (n,m) tuple
+        
+        
+        Example dense_params dictionary:
+        
+        dense_params = {'0':{'nodes':32,
+                             'activation':'relu'},
+                        '1':{'nodes':64,
+                             'activation':'relu'}
+                        }
+        
+        A dense param dictionary needs dense_layers - 1 entries at max. This is because the final dense layer 
+        is the model output layer with nodes = image classes and a softmax activation layer. This activation 
+        was chose due to the categorical nature of the model output layer. If #dense_param entries = dense_layers
+        the last entry will be ignored. If a non output layer entry is is omitted then that layer will have default
+        paremters as shown in set_dense_default(). The layer key strings must be entered as seen in the example;
+        'nodes' value must be an integer;'activation' value must be a string.
+        
+        
+        """
+    
     #initializes the sequential model
     model = Sequential()
     
