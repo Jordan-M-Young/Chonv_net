@@ -101,7 +101,7 @@ def add_dense_layers(model,dense_layers,dense_params,classes):
     """Handles adding dense layers to model architectures"""
     
     for i in range(dense_layers):
-        if i == len(dense_layers) - 1:
+        if i == dense_layers - 1:
             
             model.add(Dense(classes))
             model.add(Activation('softmax'))
