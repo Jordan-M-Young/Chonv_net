@@ -9,7 +9,6 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D
 
 
-
 def set_conv_defaults():
     
     """Sets convolutional layer parameters to these default values"""
@@ -25,7 +24,9 @@ def conv_param_check(conv_params,i):
     
     """Checks to see if (1) a convolutional layer parameter dictionary has been
     passed to the model architecture constructor and (2) the layer being added
-    had a corresponding paremeter set in the passed dictionary"""
+    had a corresponding paremeter set in the passed dictionary.If either 
+    (1) or (2) are untrue then that layer is set to the default values shown
+    in set_conv_defaults"""
     
     if conv_params == None:
         filters,filter_kernel_size,activation,pool_kernel_size = set_conv_defaults()
@@ -56,7 +57,9 @@ def dense_param_check(dense_params,i):
     
     """Checks to see if (1) a dense layer parameter dictionary has been
     passed to the model architecture constructor and (2) the layer being added
-    had a corresponding paremeter set in the passed dictionary"""
+    had a corresponding paremeter set in the passed dictionary. If either 
+    (1) or (2) are untrue then that layer is set to the default values shown
+    in set_dense_defaults"""
     
     
     
@@ -72,20 +75,9 @@ def dense_param_check(dense_params,i):
     return nodes, activation
 
 
-def model_architecture_constructor(imdim,conv_layers,dense_layers,classes=4,
-                                   conv_params=None,dense_params=None):
-
-    """constructs a convolutional neural network architecture based on the 
-    following passed paramters:
-        (1) Image dimension ---> imdim
-        (2) #Convolutional Layers ---- > conv_layers
-        (3) #Fully connected dense layers ---> dense_layers
-        (4) #Image classes images are grouped into
-        (5) Convolutional Layers parameter dictionary --> conv_params
-        (6) Dense Layers parameter dictionary ---> dense_params"""
-
+def add_conv_layers(model,conv_layers,conv_params,imdim):
     
-    model = Sequential()
+    """Handles adding convolutional layers to model architecture"""
     
     for i in range(conv_layers):
         if i == 0:
@@ -101,8 +93,12 @@ def model_architecture_constructor(imdim,conv_layers,dense_layers,classes=4,
             model.add(Activation(parms[2]))
             model.add(MaxPooling2D(pool_size=parms[3]))
     
-    model.add(Flatten())
+    return model
+
+
+def add_dense_layers(model,dense_layers,dense_params,classes):
     
+    """Handles adding dense layers to model architectures"""
     
     for i in range(dense_layers):
         if i == len(dense_layers) - 1:
@@ -113,19 +109,33 @@ def model_architecture_constructor(imdim,conv_layers,dense_layers,classes=4,
             parms = dense_param_check(dense_params, i)
             model.add(Dense(parms[0]))
             model.add(Activation(parms[1]))
+            
+    return model
+
+def model_architecture_constructor(imdim,conv_layers,dense_layers,classes=4,
+                                   conv_params=None,dense_params=None):
+
+    """constructs a convolutional neural network architecture based on the 
+    following passed paramters:
+        (1) Image dimension ---> imdim
+        (2) #Convolutional Layers ---- > conv_layers
+        (3) #Fully connected dense layers ---> dense_layers
+        (4) #Image classes images are grouped into
+        (5) Convolutional Layers parameter dictionary --> conv_params
+        (6) Dense Layers parameter dictionary ---> dense_params"""
+
+    #initializes the sequential model
+    model = Sequential()
+    
+    #adds convolutional layers to the sequential model
+    model = add_conv_layers(model,conv_layers,conv_params,imdim)
+    
+    #adds a flatten layer to model, this is the "bridge" between convoluted
+    #feature maps and the fully connected neural network layers
+    model.add(Flatten())
+    
+    #adds fully connected "dense" neural network layers
+    model.add_dense_layers(model,dense_layers,dense_params,classes)
     
 
     return model
-    
-    
-    
-    
-conv_params = {'0':{'filters':32,
-                    'filter_kernel_size':(3,3),
-                    'activation':'relu',
-                    'pool_kernel_size':(2,2)},
-               '1':{'filters':32,
-                    'filter_kernel_size':(3,3),
-                    'activation':'relu',
-                    'pool_kernel_size':(2,2)}}
-
