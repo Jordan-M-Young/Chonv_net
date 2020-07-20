@@ -52,7 +52,7 @@ validation_generator = test_datagen.flow_from_directory(
         class_mode='categorical')
 
 
-# Generates Model Architecture
+# Generates Model Architecture any model from chonv_zoo.py is acceptable as a call here, C3D3 is only an example.
 model = cv.C3D3(512)
 
 
