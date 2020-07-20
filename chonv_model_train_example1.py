@@ -19,6 +19,10 @@ val_accs = []
 losses = []
 val_losses = []
 
+#Locations of your Training and Validation image sets 
+train_dir_path = 'C:/Users/jmyou/Desktop/Gen_Images_512_BIGSET_wnames/Train'
+val_dir_path = 'C:/Users/jmyou/Desktop/Gen_Images_512_BIGSET_wnames/Validation'
+
 
 #Builds Image generators used to pass images to model for training/validation
 train_datagen = ImageDataGenerator(
@@ -34,7 +38,7 @@ test_datagen = ImageDataGenerator(
         )
 
 train_generator = train_datagen.flow_from_directory(
-        'C:/Users/jmyou/Desktop/Gen_Images_512_BIGSET_wnames/Train',
+        train_dir_path,
         target_size=(512, 512),
         color_mode="grayscale",
         shuffle=True,
@@ -43,7 +47,7 @@ train_generator = train_datagen.flow_from_directory(
         class_mode='categorical')
 
 validation_generator = test_datagen.flow_from_directory(
-        'C:/Users/jmyou/Desktop/Gen_Images_512_BIGSET_wnames/Validation',
+        val_dir_path,
         target_size=(512, 512),
         color_mode="grayscale",
         batch_size=32,
