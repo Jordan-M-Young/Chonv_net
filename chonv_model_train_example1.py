@@ -12,6 +12,9 @@ from keras.preprocessing.image import ImageDataGenerator
 
 #Custom Scripts
 import chonv_zoo as cv
+"""This script is an example of how I trained CNNs for the purpose of classifying my Ordinary Chondrite Image set. 
+This script uses data generators and the flow from dir tensorflow method. To learn how to set up a compatible directory
+for this method, see the readme. Model architectures were called from the chonv_zoo.py file"""
 
 #Model Result Metrics
 accs = []
