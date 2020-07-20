@@ -174,7 +174,7 @@ def model_architecture_constructor(imdim,conv_layers,dense_layers,classes=4,
     model.add(Flatten())
     
     #adds fully connected "dense" neural network layers
-    model.add_dense_layers(model,dense_layers,dense_params,classes)
+    model = add_dense_layers(model,dense_layers,dense_params,classes)
     
 
     return model
