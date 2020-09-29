@@ -8,7 +8,7 @@ from keras.preprocessing.image import ImageDataGenerator
 """Example 3 of how a model can be trained, this script explicitly calls
 various tensorflow model layers to design a custom model architecture. This
 style of model construction sacrifices the ability to train multiple models
-of differing architectures for more control over a single model's architecture.
+of differing architectures for more control over a single model's architecture."""
 
 
 #Model Result Metrics
